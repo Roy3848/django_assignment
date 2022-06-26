@@ -1,25 +1,16 @@
-
-import email
-from functools import partial
-from os import stat
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 import random
 from django.contrib.auth import authenticate,login,logout
 from rest_framework.response import Response
 from API import serializer as s
-from API import serializer
 from API.models import EmployeeUser
-from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView,RetrieveAPIView,UpdateAPIView
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework import status
 from API.serializer import EmployeeSerializer, EmployeeLoginSerializer, EmployeeProfileSerializer,SuperUserSerializer
 from django.core.mail import send_mail
-from API.manager import EmployeeManager
-# create user Token Manually
-
 
 def createToken(user):
 
@@ -32,7 +23,6 @@ def createToken(user):
 
     return token
 
-
 def CreateRandomPassword():
     string = 'abcdefghijklmnopqrstwxyz'
     upperString = string.upper()
@@ -42,14 +32,6 @@ def CreateRandomPassword():
     password = "".join(random.sample(combine, 8))
     return password
 
-
-# def Profile(username):
-#     user_profile = EmployeeUser.objects.get(username=username)
-#     serializer = EmployeeProfileSerializer(user_profile)
-#     data = serializer.data
-#     return data
-
-# Create Register Employee Here Only manager can do
 
 class CreateAPI(CreateAPIView):
 
@@ -74,7 +56,6 @@ class CreateAPI(CreateAPIView):
         print('manager',manager_serializer.data['is_manager'])
         is_manager = manager_serializer.data['is_manager']
         if is_manager:
-
             user_data = request.data
             print(request.data)
             print(request.user)
@@ -135,12 +116,11 @@ class UserLogout(RetrieveAPIView):
     def get(self,request):
         user_profile = EmployeeProfileSerializer(request.user)
         token = RefreshToken(request.data.get('refresh'))
+        # accessToken = RefreshToken(request.data.get('access'))
         token.blacklist()
         print("Tokenn",request.user)
         logout(request)
         return Response({"status":"Logged Out!","User":user_profile.data['email']})
-
-
 
 class UserProfile(RetrieveAPIView):
 
