@@ -49,7 +49,11 @@ class UserChangePassword(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         password = validated_data.get('password')
-        print("password:-",password)
         instance.set_password(password)
         instance.save()
         return instance
+
+class UserForgetPassword(serializers.ModelSerializer):
+    class Meta:
+        model = EmployeeUser
+        fields = ['email']
