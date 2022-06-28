@@ -4,8 +4,8 @@ from django.contrib.auth.models import AbstractBaseUser
 
 class EmployeeUser(AbstractBaseUser):
     employee_role = {
-        ('Engineer','Engineer'),
-        ('Associate Engineer','Associate Engineer'),
+        ('Software Engineer','Software Engineer'),
+        ('Analyst','Analyst'),
         ('Trainee Engineer','Trainee Engineer')
     }
     email = models.EmailField(

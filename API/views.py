@@ -58,7 +58,7 @@ class CreateAPI(CreateAPIView):
             'About Credntial',
             f'''Email :- {email} 
              password {password}''',
-            'rohit.ghule@mindbowser.com',
+            'sayak.roy@mindbowser.com',
             [email],
             fail_silently=False,
         )
@@ -83,7 +83,7 @@ class CreateAPI(CreateAPIView):
             else:
                 return Response({"status": "Failed"}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
-            return Response({"status":"failed","message":"Your Not Manager So You Have Not Rights To Register Emplyoee"})
+            return Response({"status":"failed","message":"Only manager can create an employee"})
 
 # login user here
 class UserLogin(CreateAPIView):
@@ -155,7 +155,7 @@ class CreateSuperUser(CreateAPIView):
     def post(self, request):
         try:
             super_user = EmployeeUser.objects.get(is_admin=True)
-            return Response({"status":"Failed Super is Already There"},status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response({"status":"Failed, Superuser is Already There"},status=status.HTTP_406_NOT_ACCEPTABLE)
 
         except BaseException as e:
             print("error",e)
@@ -178,7 +178,7 @@ class CreateManager(CreateSuperUser,CreateAPIView):
     def post(self, request):
         try:
             manger_user = EmployeeUser.objects.get(is_manager=True)
-            return Response({"status":"Failed Manager User Is Already There"},status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response({"status":"Failed, Manager User Is Already There"},status=status.HTTP_406_NOT_ACCEPTABLE)
 
         except BaseException:
             serializer = s.ManagerSerialzer(data=request.data)
@@ -222,7 +222,7 @@ class ForgotPassword(UpdateAPIView):
             'About Credntial',
             f'''Email :- {email} 
              password {password}''',
-            'rohit.ghule@mindbowser.com',
+            'sayak.roy@mindbowser.com',
             [email],
             fail_silently=False,
         )
@@ -254,7 +254,7 @@ class ForgotPasswordUserRequest(CreateAPIView):
         send_mail(
             'Below there is password change link',
             f'{message}',
-            'rohit.ghule@mindbowser.com',
+            'sayak.roy@mindbowser.com',
             [email],
             fail_silently=False,
         )
